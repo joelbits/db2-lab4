@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS projects;
 create table projects (
 	id INT PRIMARY KEY AUTO_INCREMENT,
 	name VARCHAR(50),
-	description VARCHAR(50),
+	description VARCHAR(53), -- Changed from 50 because of lengthy content below
 	supervisor INT
 );
 
