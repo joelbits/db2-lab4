@@ -1,0 +1,24 @@
+
+
+#### Databases 2 - Uppsala University VT2018
+### SQL Index
+
+## Usage:
+```
+docker-compose up -d --build
+```
+
+Then browse to http://localhost:8181 for phpMyAdmin.
+lab4:lab4 as login. 
+
+Click lab4 DB in left menu, then SQL tab and insert queries from mysql/src.sql .
+
+Or from command line:
+```docker exec -it db2-lab4 bash
+THEN:
+mysql -ulab4 -plab4 lab4 < /scripts/c_src.sql
+OR simply:
+docker exec -it db2-lab4 mysql -ulab4 -plab4 lab4 < /scripts/c_src.sql
+```
+
+Note:
