@@ -9,3 +9,24 @@ USE lab4;
 -- projectmembers-e_id till employees-id
 -- projectmembers-p_id till projects-id
 
+-- Add FKs to departments table
+-- TODO: Make work: ALTER TABLE departments DROP CONSTRAINT FK_Employee_Id IF (@existing > 0);
+ALTER TABLE departments
+ADD CONSTRAINT FK_Employee_Id FOREIGN KEY (manager)
+    REFERENCES employees(id)
+    ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- Add FKs to projects table
+ALTER TABLE projects
+ADD CONSTRAINT FK_Employee_Id FOREIGN KEY (supervisor)
+    REFERENCES employees(id)
+    ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- Add FKs to project_members table
+ALTER TABLE project_members
+ADD CONSTRAINT FK_Employee_Id FOREIGN KEY (e_id)
+    REFERENCES employees(id)
+    ON DELETE CASCADE ON UPDATE CASCADE,
+ADD CONSTRAINT FK_Project_Id FOREIGN KEY (p_id)
+    REFERENCES projects(id)
+    ON DELETE CASCADE ON UPDATE CASCADE;

@@ -18,7 +18,7 @@ RUN rm -f /docker-entrypoint-initdb.d/z_reset_db.sql \
 
 # RUN sed -i 's/MYSQL_DATABASE/'$MYSQL_DATABASE'/g' /scripts/reset_db.sql
 
-RUN echo "#!/bin/bash\nmysql -u$MYSQL_USER -p$MYSQL_PASSWORD < /scripts/reset_db.sql" > /usr/bin/resetmydb && \
+RUN echo "#!/bin/sh\nmysql -u$MYSQL_USER -p$MYSQL_PASSWORD < /scripts/z_reset_db.sql" > /usr/bin/resetmydb && \
     chmod +x /usr/bin/resetmydb
 
 EXPOSE 3306
