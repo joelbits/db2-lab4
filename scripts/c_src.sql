@@ -4,30 +4,31 @@ USE lab4;
 
 -- Lab 4 - 1 Foreign keys
 -- Skriv queries (ALTER TABLE) för koppla ihop tabellerna med foreign_keys, ta med lämpliga val för vad som ska hända vid updates och deletes på PK:
--- departments-mangager till employees-id,
--- project-supervisor till employees-id
--- projectmembers-e_id till employees-id
--- projectmembers-p_id till projects-id
+-- departments-mangager till employees-id, (1)
+-- project-supervisor till employees-id (2)
+-- projectmembers-e_id till employees-id (3)
+-- projectmembers-p_id till projects-id (4)
 
--- Add FKs to departments table
--- TODO: Make work: ALTER TABLE departments DROP CONSTRAINT FK_Employee_Id IF (@existing > 0);
---TODO: Double check ON DELETE / UPDATE ALL OF THEM !!!
+-- (1) Add FKs to departments table: departments-mangager till employees-id
 ALTER TABLE departments
 ADD CONSTRAINT FK_Employee_Id FOREIGN KEY (manager)
     REFERENCES employees(id)
-    ON DELETE CASCADE ON UPDATE CASCADE;
+    ON DELETE SET NULL ON UPDATE CASCADE;
 
--- Add FKs to projects table
+-- (2) project-supervisor till employees-id
 ALTER TABLE projects
 ADD CONSTRAINT FK_Employee_Id FOREIGN KEY (supervisor)
     REFERENCES employees(id)
-    ON DELETE CASCADE ON UPDATE CASCADE;
+    ON DELETE SET NULL ON UPDATE CASCADE;
 
--- Add FKs to project_members table
+-- (3) Add FKs to project_members-e_id -> employees-id
 ALTER TABLE project_members
 ADD CONSTRAINT FK_Employee_Id FOREIGN KEY (e_id)
     REFERENCES employees(id)
-    ON DELETE CASCADE ON UPDATE CASCADE,
+    ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- (4) Add FK projectmembers-p_id -> projects-id
+ALTER TABLE project_members
 ADD CONSTRAINT FK_Project_Id FOREIGN KEY (p_id)
     REFERENCES projects(id)
     ON DELETE CASCADE ON UPDATE CASCADE;
