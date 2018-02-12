@@ -22,4 +22,4 @@ services:
     links:
       - "mysql:db"
     ports:
-      - "8181:80"
+      - "${PHPADMIN_PUBLIC_PORT}:80"
