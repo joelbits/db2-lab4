@@ -32,3 +32,9 @@ ALTER TABLE project_members
 ADD CONSTRAINT FK_Proj_Members_pid_Project_Id FOREIGN KEY (p_id)
     REFERENCES projects(id)
     ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+-- USAGE:
+SHOW CREATE TABLE departments;
+SHOW CREATE TABLE projects;
+SHOW CREATE TABLE project_members;
