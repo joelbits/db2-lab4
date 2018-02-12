@@ -11,6 +11,7 @@ USE lab4;
 
 -- Add FKs to departments table
 -- TODO: Make work: ALTER TABLE departments DROP CONSTRAINT FK_Employee_Id IF (@existing > 0);
+--TODO: Double check ON DELETE / UPDATE ALL OF THEM !!!
 ALTER TABLE departments
 ADD CONSTRAINT FK_Employee_Id FOREIGN KEY (manager)
     REFERENCES employees(id)
