@@ -11,24 +11,24 @@ USE lab4;
 
 -- (1) Add FKs to departments table: departments-mangager till employees-id
 ALTER TABLE departments
-ADD CONSTRAINT FK_Employee_Id FOREIGN KEY (manager)
+ADD CONSTRAINT FK_Dep_Manager_Employee_Id FOREIGN KEY (manager)
     REFERENCES employees(id)
     ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- (2) project-supervisor till employees-id
 ALTER TABLE projects
-ADD CONSTRAINT FK_Employee_Id FOREIGN KEY (supervisor)
+ADD CONSTRAINT FK_Proj_Supervisor_Employee_Id FOREIGN KEY (supervisor)
     REFERENCES employees(id)
     ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- (3) Add FKs to project_members-e_id -> employees-id
 ALTER TABLE project_members
-ADD CONSTRAINT FK_Employee_Id FOREIGN KEY (e_id)
+ADD CONSTRAINT FK_Proj_Members_eid_Employee_Id FOREIGN KEY (e_id)
     REFERENCES employees(id)
     ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- (4) Add FK projectmembers-p_id -> projects-id
 ALTER TABLE project_members
-ADD CONSTRAINT FK_Project_Id FOREIGN KEY (p_id)
+ADD CONSTRAINT FK_Proj_Members_pid_Project_Id FOREIGN KEY (p_id)
     REFERENCES projects(id)
     ON DELETE CASCADE ON UPDATE CASCADE;
