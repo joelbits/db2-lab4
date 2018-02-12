@@ -13,13 +13,13 @@ USE lab4;
 ALTER TABLE departments
 ADD CONSTRAINT FK_Dep_Manager_Employee_Id FOREIGN KEY (manager)
     REFERENCES employees(id)
-    ON DELETE SET NULL ON UPDATE CASCADE;
+    ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- (2) project-supervisor till employees-id
 ALTER TABLE projects
 ADD CONSTRAINT FK_Proj_Supervisor_Employee_Id FOREIGN KEY (supervisor)
     REFERENCES employees(id)
-    ON DELETE SET NULL ON UPDATE CASCADE;
+    ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- (3) Add FKs to project_members-e_id -> employees-id
 ALTER TABLE project_members
