@@ -2,7 +2,7 @@
 
 USE lab4;
 
--- Lab 4 - 5 - Skapa vy: salary_data_dept
+-- Lab 4 - 6 - Skapa vy: salary_data_dept
 -- Skapa en vy som ger avdelningsnamn, minsta lön, hösta lön, medellön och antal anställda för varje avdelning.
 -- ALTER TABLE departments ADD name VARCHAR(30) UNIQUE; -- FROM Lab 4 - 3
 
