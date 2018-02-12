@@ -2,10 +2,19 @@
 
 USE lab4;
 
--- Lab 4 - 1 Foreign keys
--- Skriv queries (ALTER TABLE) för koppla ihop tabellerna med foreign_keys, ta med lämpliga val för vad som ska hända vid updates och deletes på PK:
--- departments-mangager till employees-id,
--- project-supervisor till employees-id
--- projectmembers-e_id till employees-id
--- projectmembers-p_id till projects-id
+-- Lab 4 - 8 - Skapa tabell: total_salary
+-- Skapa en tabell för summan av löner, lägg in nuvarande värde (gör SELECT SUM(salary)...) och lägg till triggers på anställdas löner så att summan av löner alltid stämmer i nya tabellen. Tabellen ska också ha ett fält för last_update som visar när den senast uppdaterades. Testa och visa med några UPDATE och INSERT att det fungerar.
 
+DROP TABLE IF EXISTS total_salary;
+
+CREATE TABLE total_salary (
+    total_sum INT,
+    last_update DATE
+);
+
+INSERT INTO total_salary (total_sum, last_update)
+VALUES ((SELECT SUM(salary) FROM employees), DATE(NOW()));
+
+SELECT * FROM total_salary;
+
+-- TODO: The triggers required!
