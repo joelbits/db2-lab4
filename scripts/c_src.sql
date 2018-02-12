@@ -8,12 +8,15 @@ USE lab4;
 
 DROP VIEW IF EXISTS salary_data_dept;
 CREATE VIEW salary_data_dept AS
-SELECT d.name AS department_name,
+SELECT ANY_VALUE(d.department) AS dep_name,
     MIN(e.salary) AS min_salary,
     MAX(e.salary) AS max_salary,
     AVG(e.salary) AS avg_salary,
-    (SELECT COUNT(*) FROM employees) AS dep_employees
-FROM departments d, employees e;
+    (SELECT COUNT(*) from employees WHERE (employees.department = e.id)) AS dep_emps
+from (departments d
+    LEFT JOIN employees e
+    ON ((d.id = e.department))
+)
+group by dep_emps;
 
--- SELECT * FROM salary_data_dept
--- GROUP BY department_name;
+SELECT * FROM salary_data_dept;
