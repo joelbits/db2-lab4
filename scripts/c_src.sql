@@ -12,8 +12,7 @@ USE lab4;
 
 -- Lab 4 - 2 - Projects
 -- Skriv queries så att projects ändras (ALTER TABLE) så att varje project alltid har en supervisor, så att två projektnamn inte kan vara samma, och så att det alltid måste finnas ett projektnamn.
-ALTER TABLE projects MODIFY CONSTRAINT FK_Employee_Id
-
---ALTER TABLE `projects` DROP FOREIGN KEY `FK_Employee_Id`;
---ALTER TABLE `projects` ADD CONSTRAINT `FK_Employee_Id`
---    FOREIGN KEY (`FK_Employee_Id`) REFERENCES `employees`.`id` ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE projects MODIFY supervisor NOT NULL;
+ALTER TABLE projects ADD UNIQUE(name);
+ALTER TABLE projects MODIFY name NOT NULL;
+-- TODO: Not tested!
