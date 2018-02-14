@@ -41,8 +41,12 @@ SHOW CREATE TABLE project_members;
 
 
 -- Lab 4 - 2 - Projects
--- Skriv queries så att projects ändras (ALTER TABLE) så att varje project alltid har en supervisor, så att två projektnamn inte kan vara samma, och så att det alltid måste finnas ett projektnamn.
-ALTER TABLE projects MODIFY supervisor INT NOT NULL; -- Works!
+-- Skriv queries så att projects ändras (ALTER TABLE) så att varje project alltid har en supervisor (1), så att två projektnamn inte kan vara samma (2), och så att det alltid måste finnas ett projektnamn (3).
+
+-- (1) -- Works!
+ALTER TABLE projects MODIFY supervisor INT NOT NULL;
+
+-- (2) -- WIP
 
 -- Since MySQL ~5.7.4 ALTER IGNORE... does not work anymore. Therefore, first removing duplicates = change projects.name of duplicates to something unique
 SELECT name, id, COUNT(*) c -- remove ID and works better......
@@ -55,4 +59,5 @@ UPDATE projects SET name = CONCAT(name, id) WHERE
 
 ALTER TABLE projects ADD CONSTRAINT UNIQUE(name);
 
-ALTER TABLE projects MODIFY name VARCHAR(50) NOT NULL; -- Works!
+-- (3) -- Works!
+ALTER TABLE projects MODIFY name VARCHAR(50) NOT NULL;
