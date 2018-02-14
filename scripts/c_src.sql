@@ -33,10 +33,35 @@ ADD CONSTRAINT FK_Proj_Members_pid_Project_Id FOREIGN KEY (p_id)
     REFERENCES projects(id)
     ON DELETE CASCADE ON UPDATE CASCADE;
 
--- USAGE:
+-- 4 - 1 - USAGE:
 SHOW CREATE TABLE departments;
 SHOW CREATE TABLE projects;
 SHOW CREATE TABLE project_members;
+
+
+-- Lab 4 - 2 - Projects
+-- Skriv queries så att projects ändras (ALTER TABLE) så att varje project alltid har en supervisor (1), så att två projektnamn inte kan vara samma (2), och så att det alltid måste finnas ett projektnamn (3).
+
+-- (1) alter table projects supervisor not null
+ALTER TABLE projects MODIFY supervisor INT NOT NULL;
+
+-- (2) alter table projecs add constraint unique(name)
+-- Since MySQL ~5.7.4 ALTER IGNORE... does not work. Therefore, first removing duplicates = change projects.name of duplicates to something "unique". Not perfect.
+
+ -- Renames existing duplicate names to existing name + some random numbers
+UPDATE projects p
+    JOIN (SELECT name, MIN(id) min_id FROM projects GROUP BY name HAVING COUNT(*) > 1) nn
+        ON p.name = nn.name AND p.id <> nn.min_id
+SET p.name = CONCAT(p.name, ' ABS(CHECKSUM(NewId())) % 10000');
+
+-- Now since no duplicates should exist for projects.name we can apply UNIQUE(name)
+ALTER TABLE projects ADD CONSTRAINT UNIQUE(name);
+
+-- (3) alter table projects name not null
+ALTER TABLE projects MODIFY name VARCHAR(50) NOT NULL;
+
+-- 4 - 2 - Usage:
+SHOW CREATE TABLE projects;
 
 
 -- Lab 4 - 4 - Employees
@@ -44,7 +69,7 @@ SHOW CREATE TABLE project_members;
 ALTER TABLE employees ADD INDEX (last_name);
 ALTER TABLE employees ADD UNIQUE(login);
 
--- Usage:
+-- 4 - 4 - Usage:
 SHOW CREATE TABLE employees;
 
 
@@ -63,7 +88,8 @@ ALTER table departments MODIFY id TINYINT;
 ALTER table employees MODIFY title ENUM('dr', 'mr', 'ms', 'mrs', 'rev', 'honorable');
 -- Changed from VARCHAR(50)
 
--- Usage:
+-- 4 - 5 - Usage:
 SHOW CREATE TABLE projects;
 SHOW CREATE TABLE departments;
 SHOW CREATE TABLE employees;
+
