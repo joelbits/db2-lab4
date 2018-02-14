@@ -1,22 +1,17 @@
--- Author: Joel Åkerblom joak.dev@gmail.com
-
-USE lab4;
 
 -- Lab 4 - 6 - Skapa vy: salary_data_dept
--- Skapa en vy som ger avdelningsnamn, minsta lön, hösta lön, medellön och antal anställda för varje avdelning.
--- ALTER TABLE departments ADD name VARCHAR(30) UNIQUE; -- FROM Lab 4 - 3
+-- Skapa en vy som ger avdelningsnamn, minsta lön, hösta lön, 
+-- medellön och antal anställda för varje avdelning.
 
-DROP VIEW IF EXISTS salary_data_dept;
-CREATE VIEW salary_data_dept AS
-    SELECT department FROM (SELECT * from departments WHERE id = d.id) AS dep_name,
-    MIN(SELECT ) AS min_salary,
-    MAX(e.salary) AS max_salary,
-    AVG(e.salary) AS avg_salary,
-    (SELECT COUNT(*) from employees WHERE department = e.id) AS dep_emps
-from (departments d
-    LEFT JOIN employees e
-    ON d.id = e.department
-)
-group by dep_emps;
+CREATE OR REPLACE VIEW salary_data_dept 
+AS
+SELECT d.department AS dep_name,
+    (SELECT MIN(salary) FROM employees WHERE department = d.id) as min_emp_sal,
+    (SELECT MAX(salary) FROM employees WHERE department = d.id) as max_emp_sal,
+    (SELECT AVG(salary) FROM employees WHERE department = d.id) as avg_emp_sal,
+    (SELECT COUNT(*) FROM employees WHERE department = d.id) as no_employees
+FROM departments d, employees e
+GROUP BY d.id;
 
+-- 4 - 6 - Usage:
 SELECT * FROM salary_data_dept;
