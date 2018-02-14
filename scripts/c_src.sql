@@ -49,14 +49,15 @@ ALTER TABLE projects MODIFY supervisor INT NOT NULL;
 -- (2) -- WIP
 
 -- Since MySQL ~5.7.4 ALTER IGNORE... does not work anymore. Therefore, first removing duplicates = change projects.name of duplicates to something unique
-SELECT name, id, COUNT(*) c -- remove ID and works better......
-FROM projects 
-GROUP BY name 
-HAVING c > 1
-ORDER BY id ASC;
- -- Returns "name", "c" with project.name, 2 (count)
-UPDATE projects SET name = CONCAT(name, id) WHERE 
 
+ -- Renames existing duplicate names to existing name + some random numbers
+UPDATE projects SET name = CONCAT(name, id) WHERE
+UPDATE projects p
+    JOIN (SELECT name, MIN(id) min_id FROM projects GROUP BY name HAVING COUNT(*) > 1) nn
+        ON p.name = nn.name AND p.id <> nn.id
+SET p.name = CONCAT(p.name, ' ABS(CHECKSUM(NewId())) % 10000');
+
+-- Now since no duplicates should exist for projects.name we can apply UNIQUE(name)
 ALTER TABLE projects ADD CONSTRAINT UNIQUE(name);
 
 -- (3) -- Works!
