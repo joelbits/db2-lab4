@@ -135,3 +135,24 @@ GROUP BY d.id;
 
 -- 4 - 6 - Usage:
 SELECT * FROM salary_data_dept;
+
+
+/* Lab 4 - 7 - Skapa vyn: retirement_countdown
+    Skapa en vy som listar anställda 
+    med titel, förnamn, efternamn och avdelning 
+    de jobbar på samt hur många år det är kvar tills de fyller 65. 
+    Sortera på avdelning, år kvar. 
+    Visa bara de som har 10 eller mindre år kvar till pension. */
+
+ALTER TABLE departments ADD name VARCHAR(30) UNIQUE; -- Using with this From Lab 4 - 3
+
+CREATE OR REPLACE VIEW retirement_countdown AS
+SELECT e.title AS e_title,
+    e.first_name AS fname,
+    e.last_name AS lname,
+    (SELECT department FROM departments WHERE id = e.department) AS dep_name,
+    (SELECT TIMESTAMPDIFF(YEAR, e.birth_date, NOW())) AS time_to_ret
+FROM employees e;
+
+SELECT * FROM retirement_countdown;
+-- GROUP BY department_name;
