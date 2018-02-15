@@ -152,7 +152,9 @@ SELECT e.title AS e_title,
     e.last_name AS e_lname,
     (SELECT department FROM departments WHERE id = e.department) AS e_dep_name,
     (SELECT (65 - TIMESTAMPDIFF(YEAR, e.birth_date, NOW()))) AS e_time_to_ret
-FROM employees e;
+FROM employees e
+GROUP BY e.id
+ORDER BY e_time_to_ret;
 
 SELECT * FROM retirement_countdown;
 -- GROUP BY department_name;
