@@ -157,3 +157,52 @@ ORDER BY e_time_to_ret;
 -- 4 - 7 - Usage: 
 SELECT * FROM `retirement_countdown`;
 
+
+
+
+
+/* Lab 4 - 9 - Flytta hr_notes
+ a) Skriv queries för att skapa en tabell och flytta allt 
+innehåll i hr_notes till den nya tabellen samt koppla den nya tabellen 
+till employees-id med foreign keys. Ta bort kolumnen för hr_notes från employees. */
+DROP TABLE IF EXISTS hr;
+CREATE TABLE hr (
+    id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    content TEXT,
+    CONSTRAINT FK_Employee_Id FOREIGN KEY (id) REFERENCES employees(id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION
+);
+
+INSERT INTO hr (content)
+SELECT hr_notes FROM employees;
+
+ALTER TABLE employees DROP COLUMN hr_notes;
+
+-- 4 - 9 - a) Usage: SELECT * FROM hr;
+
+-- Lab 4 - 9 - b) Skriv query som visar efternamn, förnamn, hr_notes för alla anställda.
+SELECT e.last_name, e.first_name,
+	(SELECT content FROM hr WHERE id = e.id) as hr_notes
+FROM employees e;
+
+
+/* Lab 4 - 10-12 (VG-taks) NOT done
+(VG) Lab 4 - 10 - Inga lönsminskningar
+Skriv kod för trigger som gör att löner begränsas så att det inte går att sänka lönen
+ ör en anställd och inte går att höja med mer än 5%.
+ 
+(VG) Lab 4 - 10 - Flytta telefonnummer
+Skriv queries för att skapa en ny tabell och flytta telefonnummer från employees till 
+den nya tabellen. Nya tabellen ska ha en ENUM för type som är "Work", "Home", "Mobile" 
+samt telefonnummer. Skapa sedan en vy, phone_list, med förnamn, efternamn, hemtelefon, 
+jobbtelefon, mobiltelefon. Gör en select som visar telefonlistan sorterad på efternamn 
+och sedan förnamn.
+ 
+(VG) Lab 4 - 10 - Analys
+Analysera db-server, tabellstruktur och queries och gör 3 optimeringar av DB, tabeller, 
+queries, index. Beskriv vilka, visa queries för att implementera och queries som visar 
+på förbättring. Motivera gärna med exempel på mätvärden före och efter. Det ska vara 
+saker som du kan modifera via MySQL. Optimeringar vad gäller bandbredd, hårdvara för 
+server, byte av SQL-dialekt, osv är intressanta men inte det som ska redovisas för 
+denna uppgift. */
