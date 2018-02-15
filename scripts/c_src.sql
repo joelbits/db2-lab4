@@ -144,8 +144,6 @@ SELECT * FROM salary_data_dept;
     Sortera på avdelning, år kvar. 
     Visa bara de som har 10 eller mindre år kvar till pension. */
 
-ALTER TABLE departments ADD name VARCHAR(30) UNIQUE; -- Using with this From Lab 4 - 3
-
 CREATE OR REPLACE VIEW retirement_countdown AS
 SELECT e.title AS e_title,
     e.first_name AS e_fname,
@@ -156,5 +154,6 @@ FROM employees e
 GROUP BY e.id
 ORDER BY e_time_to_ret;
 
-SELECT * FROM retirement_countdown;
--- GROUP BY department_name;
+-- 4 - 7 - Usage: 
+SELECT * FROM `retirement_countdown`;
+
