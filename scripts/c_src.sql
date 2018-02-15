@@ -13,10 +13,9 @@ CREATE TABLE total_salary (
     last_update DATETIME
 );
 
+-- Update the table once initially
 INSERT INTO total_salary (total_sum, last_update)
 VALUES ((SELECT SUM(salary) FROM employees), NOW());
-
-SELECT * FROM total_salary;
 
 -- 4 - 8 - Procedure helping the triggers below
 DROP PROCEDURE IF EXISTS update_total_salaries;
@@ -58,3 +57,16 @@ END //
 DELIMITER ;
 
 -- 4 - 8 - Usage:
+/* 
+
+SELECT * FROM `total_salary`;
+total_sum   last_update
+39366201	2018-02-15 11:14:45	
+
+UPDATE employees SET salary = 2000000 WHERE id = 1;
+
+SELECT * FROM `total_salary`;
+total_sum   last_update
+41325693 	2018-02-15 11:15:53
+
+*/
