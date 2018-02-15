@@ -148,10 +148,10 @@ ALTER TABLE departments ADD name VARCHAR(30) UNIQUE; -- Using with this From Lab
 
 CREATE OR REPLACE VIEW retirement_countdown AS
 SELECT e.title AS e_title,
-    e.first_name AS fname,
-    e.last_name AS lname,
-    (SELECT department FROM departments WHERE id = e.department) AS dep_name,
-    (SELECT (65 - TIMESTAMPDIFF(YEAR, e.birth_date, NOW()))) AS time_to_ret
+    e.first_name AS e_fname,
+    e.last_name AS e_lname,
+    (SELECT department FROM departments WHERE id = e.department) AS e_dep_name,
+    (SELECT (65 - TIMESTAMPDIFF(YEAR, e.birth_date, NOW()))) AS e_time_to_ret
 FROM employees e;
 
 SELECT * FROM retirement_countdown;
