@@ -18,4 +18,43 @@ VALUES ((SELECT SUM(salary) FROM employees), NOW());
 
 SELECT * FROM total_salary;
 
--- TODO: The triggers required!
+-- 4 - 8 - Procedure helping the triggers below
+DROP PROCEDURE IF EXISTS update_total_salaries;
+DELIMITER //
+CREATE PROCEDURE update_total_salaries()
+BEGIN
+    UPDATE total_salary SET 
+    total_sum = (SELECT SUM(salary) FROM employees),
+    last_update = NOW();
+END //
+DELIMITER ;
+
+-- 4 - 8 - The triggers
+DROP TRIGGER IF EXISTS salary_insert;
+DELIMITER //
+CREATE TRIGGER salary_insert
+AFTER INSERT ON employees FOR EACH ROW
+BEGIN
+    CALL update_total_salaries();
+END //
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS salary_update;
+DELIMITER //
+CREATE TRIGGER salary_update
+AFTER UPDATE ON employees FOR EACH ROW
+BEGIN
+    CALL update_total_salaries();
+END //
+DELIMITER ;
+
+DROP TRIGGER IF EXISTS salary_delete;
+DELIMITER //
+CREATE TRIGGER salary_delete
+AFTER DELETE ON employees FOR EACH ROW
+BEGIN
+    CALL update_total_salaries();
+END //
+DELIMITER ;
+
+-- 4 - 8 - Usage:
