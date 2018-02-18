@@ -189,10 +189,10 @@ VALUES ((SELECT SUM(salary) FROM employees), NOW());
 -- 4 - 8 - Procedure helping the triggers below
 DROP PROCEDURE IF EXISTS update_total_salaries;
 DELIMITER //
-CREATE PROCEDURE update_total_salaries()
+CREATE PROCEDURE update_total_salaries(IN addamount INT)
 BEGIN
     UPDATE total_salary SET 
-    total_sum = (SELECT SUM(salary) FROM employees),
+    total_sum = total_sum + addamount,
     last_update = NOW();
 END //
 DELIMITER ;
@@ -203,7 +203,7 @@ DELIMITER //
 CREATE TRIGGER salary_insert
 AFTER INSERT ON employees FOR EACH ROW
 BEGIN
-    CALL update_total_salaries();
+    CALL update_total_salaries(NEW.salary);
 END //
 DELIMITER ;
 
@@ -212,7 +212,7 @@ DELIMITER //
 CREATE TRIGGER salary_update
 AFTER UPDATE ON employees FOR EACH ROW
 BEGIN
-    CALL update_total_salaries();
+    CALL update_total_salaries(NEW.salary - OLD.salary);
 END //
 DELIMITER ;
 
@@ -221,13 +221,14 @@ DELIMITER //
 CREATE TRIGGER salary_delete
 AFTER DELETE ON employees FOR EACH ROW
 BEGIN
-    CALL update_total_salaries();
+    CALL update_total_salaries(-OLD.salary);
 END //
 DELIMITER ;
 
 -- 4 - 8 - Usage:
 /* 
 
+-- Update a salary, and total_salary updates:
 SELECT * FROM `total_salary`;
 total_sum   last_update
 39366201	2018-02-15 11:14:45	
@@ -237,6 +238,13 @@ UPDATE employees SET salary = 2000000 WHERE id = 1;
 SELECT * FROM `total_salary`;
 total_sum   last_update
 41325693 	2018-02-15 11:15:53
+
+
+-- When deleting user, also updates total_salary:
+SELECT * FROM `total_salary`;
+SELECT id, salary FROM employees WHERE id = 2;
+DELETE FROM employees WHERE id = 2;
+SELECT * FROM `total_salary`;
 
 */
 
