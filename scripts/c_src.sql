@@ -161,7 +161,8 @@ FROM
     INNER JOIN departments d ON e.department = d.id
     GROUP BY e.department, e.id,  e.first_name, e.title, e.last_name
     ORDER BY dep_id, time_to_ret
-) AS T;
+) AS T
+WHERE T.time_to_ret < 11;
 
 
 -- 4 - 7 - Usage: 
