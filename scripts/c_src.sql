@@ -146,7 +146,7 @@ SELECT * FROM salary_data_dept;
 
 
 CREATE OR REPLACE VIEW retirement_countdown AS
-SELECT *
+SELECT title, fname, lname, dep_name, time_to_ret AS time_to_retirement
 FROM
 (
     SELECT
