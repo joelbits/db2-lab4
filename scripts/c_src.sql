@@ -144,15 +144,25 @@ SELECT * FROM salary_data_dept;
     Sortera på avdelning, år kvar. 
     Visa bara de som har 10 eller mindre år kvar till pension. */
 
+
 CREATE OR REPLACE VIEW retirement_countdown AS
-SELECT e.title AS e_title,
-    e.first_name AS e_fname,
-    e.last_name AS e_lname,
-    (SELECT department FROM departments WHERE id = e.department) AS e_dep_name,
-    (SELECT (65 - TIMESTAMPDIFF(YEAR, e.birth_date, NOW()))) AS e_time_to_ret
-FROM employees e
-GROUP BY e.id
-ORDER BY e_time_to_ret;
+SELECT *
+FROM
+(
+    SELECT
+    	e.id as 'e_id',
+    	e.title AS 'title', 
+    	e.first_name AS 'fname', 
+    	e.last_name AS 'lname',
+    	e.department AS 'dep_id',
+        (SELECT department FROM departments WHERE id = e.department) AS 'dep_name',
+        (SELECT (65 - TIMESTAMPDIFF(YEAR, e.birth_date, NOW()))) AS 'time_to_ret'
+    FROM employees e
+    INNER JOIN departments d ON e.department = d.id
+    GROUP BY e.department, e.id,  e.first_name, e.title, e.last_name
+    ORDER BY dep_id, time_to_ret
+) AS T;
+
 
 -- 4 - 7 - Usage: 
 SELECT * FROM `retirement_countdown`;
